@@ -1,16 +1,20 @@
 name: End-to-end tests
-on: push
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
     services:
       db:
         image: postgres
-        ports:
-          - 5432:5432
         env:
           POSTGRES_USER: testuser
           POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,13 +26,18 @@ jobs:
 
       - name: Create PostgreSQL user
         run: |
-          sudo psql -h db -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
+          sudo psql -h localhost -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
           start: npm run open
+
+      - name: Stop and remove Docker container
+        run: |
+          docker stop db
+          docker rm db
 
 
 
