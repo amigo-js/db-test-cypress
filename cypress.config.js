@@ -1,16 +1,20 @@
 
 
-module.exports = (on, config) => {
-  // Очистка базы данных после завершения всех тестов
-  on('task', {
-    clearDb: async () => {
-      // Выполните здесь код для очистки базы данных
-      return null;
-    }
-  });
+module.exports = defineConfig({
+  e2e: {
+    setupNodeEvents(on, config) {
+      // Очистка базы данных после завершения всех тестов
+      on('task', {
+        clearDb: async () => {
+          // Выполните здесь код для очистки базы данных
+          return null;
+        }
+      });
 
-  return config;
-};
+      return config;
+  }
+  }
+})
 
 
 
