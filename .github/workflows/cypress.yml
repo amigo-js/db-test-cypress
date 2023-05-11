@@ -32,7 +32,7 @@ jobs:
           docker-compose run --rm db bash -c 'while ! pg_isready -h db -U testuser; do sleep 1; done'
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 14
 
