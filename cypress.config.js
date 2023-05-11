@@ -12,7 +12,32 @@ module.exports = defineConfig({
         connectToPostgres: async () => {
           // Выполните здесь код для подключения к PostgreSQL
           return null;
-        }
+        },
+        createTable: async () => {
+          // Выполните здесь код для подключения к PostgreSQL
+          return null;
+        },
+        tableExists: async () => {
+          // Выполните здесь код для подключения к PostgreSQL
+          return null;
+        },
+        addColumns: async () => {
+          // Выполните здесь код для подключения к PostgreSQL
+          return null;
+        },
+        getColumns: async () => {
+          // Выполните здесь код для подключения к PostgreSQL
+          return null;
+        },
+        insertData: async () => {
+          // Выполните здесь код для подключения к PostgreSQL
+          return null;
+        },
+        getData: async () => {
+          // Выполните здесь код для подключения к PostgreSQL
+          return null;
+        },
+
       });
 
       return config;
