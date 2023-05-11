@@ -1,0 +1,119 @@
+name: End-to-end tests
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Create PostgreSQL user
+        run: |
+          PGPASSWORD=postgres sudo -E psql -h localhost -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          start: npm run open
+
+      - name: Stop and remove Docker container
+        run: |
+          docker stop db
+          docker rm db
+
+
+
+
+
+# name: End-to-end tests
+# on: push
+# jobs:
+#   cypress-run:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       # - name: Build and run Docker container
+#       #   run: |
+#       #     docker build -t myapp .
+#       #     docker run -d --name myapp-container myapp
+
+#       - name: Install PostgreSQL client
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y postgresql-client
+
+#       - name: Create PostgreSQL user
+#         run: |
+#           sudo psql -h localhost -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
+
+#       # - name: Run tests
+#       #   run: |
+#       #     # Здесь запустите ваши тесты, используя Docker-контейнер
+
+#       - name: Cypress run
+#         uses: cypress-io/github-action@v5
+#         with:
+#           browser: chrome
+#           start: npm run open
+
+#       - name: Stop and remove Docker container
+#         run: |
+#           docker stop myapp-container
+#           docker rm myapp-container
+
+
+
+
+# name: End-to-end tests
+
+# on: push
+
+# jobs:
+#   cypress-run:
+#     runs-on: ubuntu-20.04
+#     services:
+#       postgres:
+#         image: postgres
+#         ports:
+#           - 5432:5432
+#         env:
+#           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+#           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+#           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Build and run containers
+#         run: docker-compose up -d
+#       - name: Wait for the app to start
+#         run: docker-compose exec web sh -c "while ! nc -z db 5432; do sleep 1; done;"
+#       - name: Run Cypress
+#         uses: cypress-io/github-action@v2
+#         with:
+#           browser: chrome
+#           start: yarn e2e
+#       - name: Save test results
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: cypress-results
+#           path: cypress/reports/mochawesome-report/
