@@ -1,5 +1,5 @@
-
-FROM node:14
+# Base imgae taken from https://github.com/cypress-io/cypress-docker-images
+FROM node:latest
 
 # Установка PostgreSQL и создание пользователя
 RUN apt-get update \
@@ -7,11 +7,14 @@ RUN apt-get update \
     && service postgresql start \
     && su postgres -c "psql -c \"CREATE USER testuser WITH PASSWORD 'password';\""
 
-WORKDIR /app
+WORKDIR /db-tests
 
-COPY package*.json ./
-
-RUN npm ci --only=production
+COPY ./package.json .
+COPY ./package-lock.json .
+COPY ./cypress.config.js .
+COPY ./cypress ./cypress
+# Let's copy the essential files that we must use to run our scripts
+RUN npm ci --quiet
 
 COPY . .
 
