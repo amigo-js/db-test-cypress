@@ -11,6 +11,8 @@ COPY ./cypress ./cypress
 
 RUN npm ci --quiet
 
+COPY . .
+
 CMD ["npm", "run", "test"]
 
 
