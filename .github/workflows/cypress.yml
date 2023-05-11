@@ -3,14 +3,17 @@ on: push
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres
+        ports:
+          - 5432:5432
+        environment:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: password
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      # - name: Build and run Docker container
-      #   run: |
-      #     docker build -t myapp .
-      #     docker run -d --name myapp-container myapp
 
       - name: Install PostgreSQL client
         run: |
@@ -19,11 +22,7 @@ jobs:
 
       - name: Create PostgreSQL user
         run: |
-          sudo psql -h localhost -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
-
-      # - name: Run tests
-      #   run: |
-      #     # Здесь запустите ваши тесты, используя Docker-контейнер
+          sudo psql -h db -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
@@ -31,10 +30,46 @@ jobs:
           browser: chrome
           start: npm run open
 
-      - name: Stop and remove Docker container
-        run: |
-          docker stop myapp-container
-          docker rm myapp-container
+
+
+
+# name: End-to-end tests
+# on: push
+# jobs:
+#   cypress-run:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       # - name: Build and run Docker container
+#       #   run: |
+#       #     docker build -t myapp .
+#       #     docker run -d --name myapp-container myapp
+
+#       - name: Install PostgreSQL client
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y postgresql-client
+
+#       - name: Create PostgreSQL user
+#         run: |
+#           sudo psql -h localhost -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
+
+#       # - name: Run tests
+#       #   run: |
+#       #     # Здесь запустите ваши тесты, используя Docker-контейнер
+
+#       - name: Cypress run
+#         uses: cypress-io/github-action@v5
+#         with:
+#           browser: chrome
+#           start: npm run open
+
+#       - name: Stop and remove Docker container
+#         run: |
+#           docker stop myapp-container
+#           docker rm myapp-container
 
 
 
