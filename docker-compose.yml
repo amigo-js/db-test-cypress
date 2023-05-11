@@ -19,3 +19,11 @@ services:
       - db
     environment:
       - DATABASE_URL=postgres://testuser:password@db:5432/testdb
+  cypress:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    depends_on:
+      - db
