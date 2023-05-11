@@ -5,7 +5,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // Очистка базы данных после завершения всех тестов
       on('task', {
-        clearDb: async () => {
+        clearData: async () => {
           // Выполните здесь код для очистки базы данных
           return null;
         },
