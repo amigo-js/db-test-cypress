@@ -10,6 +10,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=testdb
 
+
   web:
     build: .
     ports:
