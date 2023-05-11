@@ -1,9 +1,20 @@
+version: '3'
+
 services:
   db:
     image: postgres
     ports:
-      - 5433:5432
-    env:
-      POSTGRES_USER: testuser
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: testdb
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=testdb
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://testuser:password@db:5432/testdb
