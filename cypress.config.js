@@ -18,9 +18,9 @@ module.exports = defineConfig({
           const postgresClient = new Client({
             host: 'localhost',
             port: 5432,
-            user: 'your-username',
-            password: 'your-password',
-            database: 'your-database',
+            user: 'testuser',
+            password: 'password',
+            database: 'testdb',
           });
           await postgresClient.connect();
           return null;
