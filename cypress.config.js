@@ -8,6 +8,10 @@ module.exports = defineConfig({
         clearDb: async () => {
           // Выполните здесь код для очистки базы данных
           return null;
+        },
+        connectToPostgres: async () => {
+          // Выполните здесь код для подключения к PostgreSQL
+          return null;
         }
       });
 
