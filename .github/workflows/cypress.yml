@@ -26,7 +26,7 @@ jobs:
 
       - name: Create PostgreSQL user
         run: |
-          sudo psql -h localhost -U postgres -c "CREATE USER testuser WITH PASSWORD 'password';"
+          sudo psql -h localhost -U postgres -W -c "CREATE USER testuser WITH PASSWORD 'password';"
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
